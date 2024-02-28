@@ -1,0 +1,57 @@
+Good job students!
+
+Now you have learnt how to get files over the internet with URL.
+
+Practical Session : 
+
+Goals: 
+- Get familiar with linux operating system
+- Get comfortable with using terminal 
+- Get to use several different terminal commands
+
+Tasks:
+
+- Play with tab:
+	- Start typing command like 's' and press tab, then type 'u' and tab,
+	  then type 'd' and tab
+	- Use it to see the possible files
+	- go into /etc directory
+	- type 'cd' and space and then press tab
+- Copy and paste text using mouse in the terminal
+	- Use ctrl+shift+c to copy and ctrl+shift+v to paste
+	- Use highlighting to copy and middle click to paste
+
+- Mess around with files 
+	- Look at the structure in /
+	- look at the binaries in /bin
+	- Try to locate binaries for all the commands we learnt today in the
+	  lecture
+	- Make a note of the ones you didnt find
+- man pages
+	- man man
+	- read about more commands
+	- try to play with the options with safe commands like cd, ls, grep
+
+-Copy the file you downloaded to /var
+	- try copying with sudo 
+	
+-create a folder in your home directory
+- go into the folder
+- create two text files with your favorite lines in that folder
+- concatenate the two files and print the output to the terminal
+- concatenate and print the output to a third file
+- write a small script that takes in two files, concatenates it and puts the
+  content into third file and also prints the third file to terminal
+- Download a text file from internet - a book in text format
+- dump the contents of the book in terminal
+- open it with less
+- copy the downloaded book into the directory you created. 
+- search for some word - both case sensitive and insensitive - in the file
+- save all the lines with that word into another file
+- go to /etc and read the contents of the file 'sudoers'
+- check for the permissions of that file
+- try reading it using sudo
+- make a symbolic link to your created directory in /tmp
+- cd to your symbolic link
+- use pwd to know what your current directory is
+- try rebooting and finding your symbolic link

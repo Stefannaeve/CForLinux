@@ -1,0 +1,5 @@
+Exercises for lession 6 - file I/O - 2017/10/04
+
+Today we will practice our I/O manipulation skill. Before you start,
+take a look at https://www.tutorialspoint.com/c_standard_library/stdio_h.htm
+

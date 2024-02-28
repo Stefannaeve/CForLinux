@@ -1,0 +1,7 @@
+#!/bin/bash
+
+filename1=$(basename "$1")
+filename2=$(basename "$2")
+
+cat "$filename1" "$filename2" > newFile.txt
+cat newFile.txt

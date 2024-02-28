@@ -1,0 +1,27 @@
+int kakemann = 10;
+int *pKakemann = &kakemann;
+
+pKakemann = Memory address                    // #H98347593847 // stack memory
+*pKakemann = Value stored at memory address   // 10
+
+char *assignMalloc = (char *) malloc(theSizeYouWant * sizeof(char));
+	// malloc should be used when variables need to traverse functions
+
+gdb = debugger
+	Remember to have -g in gcc compiling
+	gdb filename
+	break linenumber  /  break filename.c:linenumber
+	run
+	
+	p variablename (prints variable)  /  display variablename
+	watch variable (To stop whenever the variable changes)
+	list linenumber/function (To show surrounding area)
+	step (step into)
+	next (step over)
+	continue
+	until linenumber
+	
+valgrind = Check for memory leaks
+	valgrind --leak-check=yes --track-origins=yes
+	
+xdg-open to open jpg/pdf
