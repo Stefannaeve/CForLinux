@@ -1,0 +1,28 @@
+Check out the status od the git project, what files have been changed, what files are commited
+	git status
+
+Rollback the files which are commited, and rollbacks the changes in them
+	git checkout <FilePath/Filename>
+
+pulls from the upstream
+	git pull
+
+clones the repo you want
+	git clone
+
+adds the filename or all the changed files to commit
+	git add .    /    <fileName>
+
+Writes the commit message and sets up the commit
+	git commit -m "message"
+
+pushes the commit"s" to the place the repo is stored. on first push write, "git push --set-upstream origin master"
+	git push
+
+gets the differences between files
+	git diff
+
+
+Continue with the changes i made
+	git rebase --continue
+
