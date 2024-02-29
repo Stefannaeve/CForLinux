@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main() {
-    char *fileName = "../test.txt";
+    char *fileName = "test.txt";
     char savedChar;
     char lastChar;
     char tempChar;
