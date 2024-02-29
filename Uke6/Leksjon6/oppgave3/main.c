@@ -1,18 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 #define ARRAYSIZE 130
 
 void findWordInScramble(FILE *file, const char *compareArray, int *positionArray);
+void makeScrambleForUserInput(char *userInput, char *scrambledUserInput, int *positionInArray, int lengthOfArray);
 
 int main() {
     const char fileName[] = "../adventures.txt";
     const char computer[] = "computer";
     char userInput[ARRAYSIZE];
+    int positionInArray[ARRAYSIZE];
+    char *scrambledUserInput;
+    scrambledUserInput = (char *) malloc(ARRAYSIZE*10*sizeof(char));
     int computerPositions[8];
     char oneChar;
     char intArray[ARRAYSIZE];
     int i = 0;
 
+    srand(time(NULL));
 
     FILE *file;
     file = fopen(fileName, "r");
@@ -47,9 +54,6 @@ int main() {
 
     printf("\nWrite something please\n");
 
-    fgets(userInput, ARRAYSIZE, stdin);
-    printf("%s", userInput);
-
     i = 0;
     while((oneChar = fgetc(stdin)) != '\n' && oneChar != ' ' && oneChar != ',' && oneChar != '.'){
         if((oneChar >  65 && oneChar < 91) || (oneChar > 96 && oneChar < 122)){
@@ -58,8 +62,35 @@ int main() {
         }
     }
 
-    printf("%s", userInput);
+    makeScrambleForUserInput(userInput, scrambledUserInput, positionInArray, i);
 
+    printf("%s\n", userInput);
+
+    for (int j = 0; j < i; ++j) {
+        printf("%d ", positionInArray[j]);
+    }
+    printf("\n");
+    for (int j = 0; j < i; ++j) {
+        printf("%c  ", scrambledUserInput[positionInArray[j]]);
+    }
+
+}
+
+void makeScrambleForUserInput(char *userInput, char *scrambledUserInput, int *positionInArray, int lengthOfArray){
+    int count = 0;
+    for (int i = 0; i < lengthOfArray; ++i) {
+        int randomCount = 10 + rand() % (18 - 10 + 1);
+        int randomNumber;
+        int countConst = count;
+        for (count = count; count < countConst + randomCount; count++) {
+            randomNumber = 97 + rand() % (122 - 97 + 1);
+            scrambledUserInput[count] = (char) randomNumber;
+        }
+        scrambledUserInput[count] = userInput[i];
+        positionInArray[i] = count;
+        count++;
+    }
+    scrambledUserInput[count] = '\0';
 }
 
 void findWordInScramble(FILE *file, const char *compareArray, int *positionArray){

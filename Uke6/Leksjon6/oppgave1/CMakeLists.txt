@@ -7,4 +7,4 @@ add_executable(oppgave1 oppgaqve.c)
 
 include_directories(include)
 
-add_compile_options(-O0)
+add_compile_options(-O2)
