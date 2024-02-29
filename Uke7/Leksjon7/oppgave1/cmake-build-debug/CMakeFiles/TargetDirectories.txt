@@ -1,3 +1,0 @@
-/home/stefannaeve/School/Uke7/Leksjon7/oppgave1/cmake-build-debug/CMakeFiles/oppgave1.dir
-/home/stefannaeve/School/Uke7/Leksjon7/oppgave1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/stefannaeve/School/Uke7/Leksjon7/oppgave1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
