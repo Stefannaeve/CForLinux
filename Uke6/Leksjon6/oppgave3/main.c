@@ -13,6 +13,7 @@ int main() {
     char intArray[ARRAYSIZE];
     int i = 0;
 
+
     FILE *file;
     file = fopen(fileName, "r");
 
