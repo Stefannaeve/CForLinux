@@ -3,15 +3,15 @@
 void amundECringe();
 
 int main() {
-    int amund = 0;
-    amundECringe(&amund);
-    amundECringe(&amund);
-    amundECringe(&amund);
 
-    printf("%d", amund);
+    int justARandomNumber = 10;
+    for (int i = 0; i < justARandomNumber; ++i) {
+        amundECringe();
+    }
 }
 
-void amundECringe(int *amund){
-    *amund = *amund +1;
-    printf("Time nr. %d\n", *amund);
+void amundECringe(){
+    static int amund = 0;
+    amund++;
+    printf("Time nr. %d\n", amund);
 }
