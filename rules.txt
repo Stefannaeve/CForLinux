@@ -1,11 +1,18 @@
 int kakemann = 10;
 int *pKakemann = &kakemann;
 
-pKakemann = Memory address                    // #H98347593847 // stack memory
-*pKakemann = Value stored at memory address   // 10
+pKakemann == Memory address                    // #H98347593847 // stack memory
+*pKakemann == Value stored at memory address   // 10
 
-char *assignMalloc = (char *) malloc(theSizeYouWant * sizeof(char));
+int *pKakemann = (int *) malloc(theSizeYouWant * sizeof(int));            // Heap Memory
+pKakemann = 20;
 	// malloc should be used when variables need to traverse functions
+	// pointers behave the same regardless of the memory allocation, if its automatic stack or allocated malloc
+	// You use the "*" symbol to make a pointer, to remove the pointer you use the same symbol "*", to find the variable inside of the pointer
+	// If you use the "&" symbol on a pointer variable, you will find the memory address of said pointer, and not the memory address of the variable inside of the pointer. This symbol should be used to find the memory address of a variable assigned to the stack
+
+pKakemann == Memory address
+*pKakemann == 20
 
 gdb = debugger
 	Remember to have -g in gcc compiling
