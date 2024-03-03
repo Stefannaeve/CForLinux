@@ -7,8 +7,11 @@ typedef struct _LIST {
 } LIST;
 
 int main(){
-	printf("Hello World\n");
-	return 0;
+	LIST list1;
+    LIST list2;
+    list2.iSze = 10;
+    list1.pNext = &list2;
+    printf("%d\n", list1.pNext->iSze);
 }
 
 
