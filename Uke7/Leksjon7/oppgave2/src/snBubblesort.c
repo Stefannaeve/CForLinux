@@ -1,4 +1,4 @@
-#include "snBubblesort.h"
+#include "../include/snBubblesort.h"
 
 int sort(int *pA, int *pB){
     int j = *pA;
