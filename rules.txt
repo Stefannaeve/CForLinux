@@ -14,6 +14,16 @@ pKakemann = 20;
 pKakemann == Memory address
 *pKakemann == 20
 
+Making a static library
+	You have files: 
+		main.c 
+		function.c
+		function.h
+	gcc -c function.c -O0 -g -o obj/function.o                  // Makes an function.o file
+	ar rcs library/libraryName.a obj/function.o                 // Makes an library.a file, with function.o inside
+	gcc -c main.c -o obj/main.o				                    // Makes an main.o file
+	gcc -o main obj/main.o library/libraryName.a                // Compiles and makes a executable main file
+
 gdb = debugger
 	Remember to have -g in gcc compiling
 	gdb filename
