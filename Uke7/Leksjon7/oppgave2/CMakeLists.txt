@@ -3,4 +3,4 @@ project(oppgave2 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(oppgave2 main.c snBubblesort.c stestdlib.h)
+add_executable(oppgave2 main.c snBubblesort.c snBubblesort.h)

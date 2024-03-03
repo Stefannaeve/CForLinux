@@ -12,6 +12,9 @@ int main() {
     int *pCount = &count;
     array = (int *) malloc(sizeof(int));
 
+//    int array2[ARRAYSIZE] = {1, 2, 3, 4, 5};
+//    int array3[ARRAYSIZE] = {5, 4, 3, 2, 1};
+
     int *array2 = (int *) malloc(ARRAYSIZE*sizeof(int));
     int *array3 = (int *) malloc(ARRAYSIZE*sizeof(int));
 
@@ -43,6 +46,8 @@ int main() {
     }
     printf("\n");
 
+    printf("%hx\n", array2);
+    printf("%hx\n", array3);
 
     newThing(&array2, &array3);
 
@@ -64,7 +69,6 @@ int main() {
 void newThing(int **array1, int **array2){
     printf("Inside function\n");
 
-    printf("\n");
     *array1 = *array2;
 
     printf("\nFunction done\n");
