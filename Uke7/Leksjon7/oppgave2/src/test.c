@@ -15,21 +15,22 @@ int main() {
 //    int array2[ARRAYSIZE] = {1, 2, 3, 4, 5}; // Originale sucky code
 //    int array3[ARRAYSIZE] = {5, 4, 3, 2, 1}; // Originale sucky code
 
-    int arr2[ARRAYSIZE] = {1, 2, 3, 4, 5};
-    int arr3[ARRAYSIZE] = {5, 4, 3, 2, 1};
-    int *array2 = arr2;
-    int *array3 = arr3;
+    // int array2[ARRAYSIZE] = {1, 2, 3, 4, 5};
+    // int array3[ARRAYSIZE] = {5, 4, 3, 2, 1};
 
-//    int array2[] = (int *) malloc(ARRAYSIZE*sizeof(int));
-//    int *array3 = (int *) malloc(ARRAYSIZE*sizeof(int));
-//
-//    for (int i = 1; i < ARRAYSIZE+1; ++i) {
-//        array2[i-1] = i;
-//    }
-//    for (int i = ARRAYSIZE; i > 0; --i) {
-//        array3[count] = i;
-//        count++;
-//    }
+    // int *array2 = arr2;
+    // int *array3 = arr3;
+
+    int *array2 = (int *) malloc(ARRAYSIZE*sizeof(int));
+    int *array3 = (int *) malloc(ARRAYSIZE*sizeof(int));
+
+    for (int i = 1; i < ARRAYSIZE+1; ++i) {
+        array2[i-1] = i;
+    }
+    for (int i = ARRAYSIZE; i > 0; --i) {
+        array3[count] = i;
+        count++;
+    }
 
 
 
