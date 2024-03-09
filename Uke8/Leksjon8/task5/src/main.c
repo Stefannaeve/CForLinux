@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     THREADSEND threadSend1;
     threadSend1.alphabet = alphabet;
     threadSend1.lengthofArray = lengthOfArray;
-    threadSend1.color = "\033[0;36m";
+    threadSend1.color = "\033[0;34m";
 
     THREADSEND threadSend2;
     threadSend2.alphabet = alphabet;
