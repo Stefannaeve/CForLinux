@@ -8,6 +8,7 @@ void *PrintFunction(void *pThreadStruct);
 typedef struct _THREADSEND {
     char *alphabet;
     int lengthofArray;
+    char *color;
 } THREADSEND;
 
 int main(int argc, char *argv[]) {
@@ -17,28 +18,28 @@ int main(int argc, char *argv[]) {
 
     int lengthOfArray = strlen(alphabet);
 
-    printf("\\033[0;31m"); //Set the text to the color red
-    printf("Hello\n"); //Display Hello in red
-    printf("\\033[0m"); //Resets the text to default color
+    THREADSEND threadSend1;
+    threadSend1.alphabet = alphabet;
+    threadSend1.lengthofArray = lengthOfArray;
+    threadSend1.color = "\033[0;36m";
 
+    THREADSEND threadSend2;
+    threadSend2.alphabet = alphabet;
+    threadSend2.lengthofArray = lengthOfArray;
+    threadSend2.color = "\033[0;36m";
 
-    THREADSEND threadSend;
-    threadSend.alphabet = alphabet;
-    threadSend.lengthofArray = lengthOfArray;
-
-    THREADSEND *pThreadSend = &threadSend;
+    THREADSEND *pThreadSend1 = &threadSend1;
+    THREADSEND *pThreadSend2 = &threadSend2;
 
     printf("Before function\n");
 
-    pthread_create(&pThread1, NULL, PrintFunction, (void *) pThreadSend);
-    pthread_create(&pThread2, NULL, PrintFunction, (void *) pThreadSend);
-    pthread_create(&pThread3, NULL, PrintFunction, (void *) pThreadSend);
+    pthread_create(&pThread1, NULL, PrintFunction, (void *) pThreadSend1);
+    pthread_create(&pThread2, NULL, PrintFunction, (void *) pThreadSend2);
 
     printf("After function\n");
 
     pthread_join(pThread1, NULL);
     pthread_join(pThread2, NULL);
-    pthread_join(pThread3, NULL);
 
     printf("After threads are finished\n");
 
@@ -48,6 +49,8 @@ int main(int argc, char *argv[]) {
 void *PrintFunction(void *pThreadStruct) {
     THREADSEND *pThreadsend = (THREADSEND *) pThreadStruct;
     int count = 0;
+
+    printf("%s", pThreadsend->color);
 
     for (int i = 0; i < 1000; ++i) {
         printf("%d ", i);
