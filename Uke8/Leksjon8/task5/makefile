@@ -1,23 +1,28 @@
 TARGET = main
+INCLDIR = ./include
 SRCDIR = src
-OBJDIR = obj
 LIBS = 
 CC = gcc
-CFLAGS = -O0 -g -std=c11
+CFLAGS = -O0 -g
+CFLAGS += -I$(INCLDIR)
 RM = rm -f
 
-# Source and object files
-SOURCES = $(SRCDIR)/main.c
-OBJS = $(OBJDIR)/main.o
+OBJDIR = obj
 
-all: $(TARGET)
+# PATHS
+_DEPS = main.h 
+DEPS = $(patsubst %, $(INCLDIR)/%, $(_DEPS))
 
-$(TARGET): $(OBJS)
-	$(CC) -o $@ $^ $(LIBS) $(LDFLAGS)
+_OBJS = main.o
+OBJS = $(patsubst %, $(OBJDIR)/%, $(_OBJS))
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c 
-	$(CC) $(CFLAGS) -c $< -o $@
-
-clean:
-	$(RM) $(OBJDIR)/*.o $(TARGET)
+# RULES
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 	
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $^ $(CFLAGS)
+	
+.PHONY: clean
+clean:
+	$(RM) $(OBJDIR)/*.o *~core $(INCLDIR)/*~
