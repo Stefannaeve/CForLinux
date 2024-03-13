@@ -1,31 +1,29 @@
 TARGET = main
+INCLDIR = ./include
 SRCDIR = src
-OBJDIR = obj
-LIBS =
+BINDIR = bin
+LIBS = 
 CC = gcc
-CFLAGS = -O0 -g -std=c11
-LDFLAGS =
+CFLAGS = -O0 -g
+CFLAGS += -I$(INCLDIR)
 RM = rm -f
 
-# Ensure the obj directory exists
-$(shell mkdir -p $(OBJDIR))
+OBJDIR = obj
 
-# Source and object files
-SOURCES = $(SRCDIR)/main.c
-OBJS = $(OBJDIR)/main.o
+# PATHS
+_DEPS = main.h 
+DEPS = $(patsubst %, $(INCLDIR)/%, $(_DEPS))
 
-# Default target
-all: $(TARGET)
+_OBJS = main.o
+OBJS = $(patsubst %, $(OBJDIR)/%, $(_OBJS))
 
-# Rule to link the final executable
+# RULES
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $^ $(LIBS) $(LDFLAGS)
-
-# Rule to compile source files into object files
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
+	$(CC) -o $(BINDIR)/$@ $^ $(CFLAGS)
+	
+.PHONY: clean
 clean:
-	$(RM) $(OBJDIR)/*.o $(TARGET)
-
-.PHONY: all clean
+	$(RM) $(OBJDIR)/*.o *~core $(INCLDIR)/*~

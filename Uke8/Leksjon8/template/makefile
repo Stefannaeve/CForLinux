@@ -1,6 +1,7 @@
 TARGET = main
 INCLDIR = ./include
 SRCDIR = src
+BINDIR = bin
 LIBS = 
 CC = gcc
 CFLAGS = -O0 -g
@@ -21,7 +22,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $(BINDIR)/$@ $^ $(CFLAGS)
 	
 .PHONY: clean
 clean:

@@ -14,6 +14,18 @@ pKakemann = 20;
 pKakemann == Memory address
 *pKakemann == 20
 
+Hungerian notation
+	l = long                     // lLongNumber
+	d = double                   // dNumber
+	c = char                     // cVowels
+	i = int                      // iIntegerNumber
+	s = string                   // sInput
+	sz = Zero terminated string  // szInput
+	f = float                    // fNumber
+	a+type = array + type        // acArray (char array)
+	p+type = pointer + type      // piAge (int*)
+	
+
 Making a static library
 	You have files: 
 		main.c 
