@@ -30,10 +30,10 @@ int main() {
     sem_t bufferFull;
     sem_t bufferCleared;
 
-    for (int i = 0; i < QUITARRAY-1; ++i) {
-        quitMessage[i] = (char) (i+97);
+    for (int i = 0; i < QUITARRAY - 1; ++i) {
+        quitMessage[i] = (char) (i + 97);
     }
-    quitMessage[QUITARRAY-1] = '\0';
+    quitMessage[QUITARRAY - 1] = '\0';
 
     sem_init(&bufferFull, 0, 0);
     sem_init(&bufferCleared, 0, 0);
@@ -55,16 +55,10 @@ int main() {
         if (count < ARRAYSIZE - 1) {
             charBuffer[count++] = oneChar;
             charBuffer[count] = '\0';
-            for (int i = 0; i < QUITARRAY-2; ++i) {
-                quitMessage[i] = quitMessage[i+1];
+            for (int i = 0; i < QUITARRAY - 2; ++i) {
+                quitMessage[i] = quitMessage[i + 1];
             }
             quitMessage[5] = oneChar;
-        }
-
-        if ((strcmp(quitMessage, "\nquit\n")) == 0) {
-            *exit = 1;
-            sem_post(bufferFull);
-            break;
         }
 
         if (count == ARRAYSIZE - 1) {
@@ -72,6 +66,13 @@ int main() {
             sem_wait(&bufferCleared);
             count = 0;
         }
+
+        if ((strcmp(quitMessage, "\nquit\n")) == 0) {
+            *exit = 1;
+            sem_post(pThreadSend->bufferFull);
+            break;
+        }
+
 
     }
 
@@ -82,6 +83,7 @@ int main() {
     sem_destroy(&bufferCleared);
     free(charBuffer);
     free(quitMessage);
+    free(exit);
 }
 
 void *writeToFile(void *threadSend) {
@@ -96,12 +98,13 @@ void *writeToFile(void *threadSend) {
 
     sem_wait(pThreadSend->bufferFull); // Wait for main to give the go ahead
 
-    while (pThreadSend->exit == 0) {
+    while (*pThreadSend->exit == 0) {
         fputs(pThreadSend->charArray, pThreadSend->file);
         fflush(pThreadSend->file);
         memset(pThreadSend->charArray, 0, ARRAYSIZE * sizeof(char));
         sem_post(pThreadSend->bufferCleared);
         sem_wait(pThreadSend->bufferFull); // Changed position from beginning of while, to make the exit strategy with the int exit work properly
     }
+
     fclose(pThreadSend->file);
 }
