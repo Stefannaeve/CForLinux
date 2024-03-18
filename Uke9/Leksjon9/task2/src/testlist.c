@@ -11,6 +11,7 @@ static void PrintList (LIST *pHead);
 int main (void)
 {
    LIST *pHead = NULL;
+   LIST *pTail = NULL;
    LIST *pThis = NULL;
    int iRc = OK;
 
@@ -18,7 +19,7 @@ int main (void)
    char *pszFifth = "The 5th Element";
 
    for (int i = 0; apszStrings[i]; i++) {
-      iRc = InsertInList (&pHead, apszStrings[i], strlen(apszStrings[i])+1);
+      iRc = InsertInList (&pHead, &pTail, apszStrings[i], strlen(apszStrings[i])+1);
       if (iRc != OK) break;
    }
 
@@ -63,12 +64,12 @@ int main (void)
 
 }
 
-static void PrintList (LIST *pThis)
+static void PrintList (LIST *pHead)
 {
    int i = 0;
-   while (pThis) {
-      printf ("%d: %s\n", ++i, pThis->cBuf);
-      pThis = pThis->pNext;
+   while (pHead) {
+      printf ("%d: %s\n", ++i, pHead->byBuf);
+       pHead = pHead->pNext;
    }
    printf ("\n");
 }
