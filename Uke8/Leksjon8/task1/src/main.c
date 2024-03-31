@@ -18,17 +18,23 @@ typedef struct _TGAHSTRUCT{
 int main(){
     char array[18] = {0};
     FILE *file = fopen("../resources/1.tga", "r");
-    fread(array, 1, 18, file);
+    TGAHSTRUCT tgaStruct;
+    fread(&tgaStruct, 1, 18, file);
     fclose(file);
 
-    TGAHSTRUCT tgaStruct;
-    tgaStruct.idLength = array[0];
-    tgaStruct.colorMapType = array[1];
-    tgaStruct.imageType = array[2];
 
     printf("%hx\n", tgaStruct.idLength);
     printf("%hx\n", tgaStruct.colorMapType);
     printf("%hx\n", tgaStruct.imageType);
+    printf("%hx\n", tgaStruct.firstEntryIndex);
+    printf("%hx\n", tgaStruct.colorMapLength);
+    printf("%hx\n", tgaStruct.colorMapEntrySize);
+    printf("%hx\n", tgaStruct.xOriginOfImage);
+    printf("%hx\n", tgaStruct.yOriginOfImage);
+    printf("%hx\n", tgaStruct.imageWidth);
+    printf("%hx\n", tgaStruct.imageHeight);
+    printf("%hx\n", tgaStruct.pixelDepth);
+    printf("%hx\n", tgaStruct.pixelDescriptor);
 
 
 }
