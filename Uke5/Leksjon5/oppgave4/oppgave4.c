@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <curses.h>
 #define ALENGTH 3
 #define TRUE 1
 #define FALSE 0
@@ -25,7 +26,8 @@ typedef struct {
 typedef enum{
     success,
     memoryError,
-    indexOutOfBoundError
+    indexOutOfBoundError,
+    wrongValue
 } STATUSCODE;
 
 void printBots(BOTLIST *botList);
@@ -34,8 +36,10 @@ void makeHealthBar(HEALTHBAR* healthbar);
 void printHealthBar(HEALTHBAR* healthbar);
 void looseHealth(HEALTHBAR * healthbar, int amount);
 void updateHealthGUI(HEALTHBAR* healthbar);
-void killBot(BOT *bot);
+void killBot(BOTLIST *list, int number);
 STATUSCODE inputWithCharLimit(char* charArray, int lengthOfArray);
+STATUSCODE yesOrNoQuestion(char* question);
+STATUSCODE shoot(BOTLIST *list, int number);
 
 int main(int argc, char* argv[]){
     int randomNumber = 6;
@@ -65,51 +69,87 @@ int main(int argc, char* argv[]){
     looseHealth(healthbar, 2);
     printHealthBar(healthbar);
 
-    killBot(&botList->BOTArray[0]);
-    killBot(&botList->BOTArray[1]);
-    killBot(&botList->BOTArray[2]);
-
     printf("%d\n", botList->BOTArray[3].value);
 
-    printBots(botList);
 
     printf("These are your adversaries, lets funk em up\n");
 
     STATUSCODE result;
+    int bots = 6;
+    int bool = FALSE;
 
     while(1){
-        while (1){
-            printf("Are you ready to begin? \"yes\" or \"no\"\n");
-            char *charArray = malloc(sizeof(char)*(3+1));
-            result = inputWithCharLimit(charArray, 3);
-            if (result != success){
-                exit(result);
-            }
-            if (charArray == NULL){
-                printf("Please try again\n");
-            } else if ((strcmp(charArray, "yes")) == 0 || (strcmp(charArray, "no")) == 0){
-                if ((strcmp(charArray, "yes")) == 0) {
-                    printf("Let the game begin!\n");
-                    break;
-                } else if ((strcmp(charArray, "no")) == 0) {
-                    printf("Okay, maybe next time!\n");
-                    exit(0);
-                }
-            } else {
-                printf("Invalid input, try again\n");
-                free(charArray);
-            }
+        if (!bool){
+            printf("The way you play this game, is you have a given time to shoot each bandit\n");
+            printf("This time will vary depending on the room, but expect 1-2 seconds\n");
+            printf("To shoot the bandit, you will have to count each \"1\" in their \"body\"\n");
+            printf("Their bodies are composed of a binary body with a 3x3 structure\n");
+            printf("When you have decided on the amount, write it in the terminal and press enter\n");
+            printf("If you have succeeded, the bandit will lay dead\n");
+            printf("If you have failed, the bandit still stands, you loose some health and you have to try again\n");
+            bool = TRUE;
         }
+        result = yesOrNoQuestion("Do you want to enter the room with the bandits?");
         if (result != success){
             exit(result);
         }
 
-        printf("Hallo?\n");
+        BOTLIST *botList = malloc(sizeof(BOTLIST) + sizeof(BOT) * bots);
+        botList->size = bots;
+
+        for (int i = 0; i < botList->size; ++i) {
+            botList->BOTArray[i] = makeRandomBot();
+        }
+        printBots(botList);
+        for (int i = 0; i < botList->size; ++i) {
+            int result = shoot(botList, i);
+            if(result != success){
+                printf("%d", result);
+                return result;
+            }
+            printBots(botList);
+        }
     }
 
-    free(healthbar);
-    free(botList);
+}
 
+STATUSCODE shoot(BOTLIST *list, int number){
+    char *array = malloc(sizeof(char) * 2);
+    char result = inputWithCharLimit(array, 1);
+    int userInput = array[0] - '0';
+    if (userInput == list->BOTArray[number].value){
+        killBot(list, number);
+        return success;
+    } else{
+        return wrongValue;
+    }
+}
+
+STATUSCODE yesOrNoQuestion(char* question){
+    STATUSCODE result;
+    while (1){
+        printf("%s \"yes\" or \"no\"\n", question);
+        char *charArray = malloc(sizeof(char)*(3+1));
+        result = inputWithCharLimit(charArray, 3);
+        if (result != success){
+            exit(result);
+        }
+        if (charArray == NULL){
+            printf("Please try again\n");
+        } else if ((strcmp(charArray, "yes")) == 0 || (strcmp(charArray, "no")) == 0){
+            if ((strcmp(charArray, "yes")) == 0) {
+                printf("Let the game begin!\n");
+                break;
+            } else if ((strcmp(charArray, "no")) == 0) {
+                printf("Okay, maybe next time!\n");
+                exit(0);
+            }
+        } else {
+            printf("Invalid input, try again\n");
+            free(charArray);
+        }
+    }
+    return result;
 }
 
 STATUSCODE inputWithCharLimit(char* charArray, int lengthOfArray){
@@ -208,16 +248,16 @@ BOT makeRandomBot(){
 	return pBot;
 }
 
-void killBot(BOT *bot){
+void killBot(BOTLIST *list, int number){
     char *DED = "DED";
     for(int i = 0; i < ALENGTH; i++){
         for(int j = 0; j < ALENGTH; j++){
             if(i == 0 || i == 1){
-                bot->array[i][j] = ' ';
+                list->BOTArray[number].array[i][j] = ' ';
             }else{
-                bot->array[i][j] = DED[j];
+                list->BOTArray[number].array[i][j] = DED[j];
             }
         }
     }
-    bot->dead = 1;
+    list->BOTArray[number].dead = TRUE;
 }
