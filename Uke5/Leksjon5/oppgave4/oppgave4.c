@@ -2,14 +2,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <curses.h>
+#include <ncurses.h>
 #define ALENGTH 3
 #define TRUE 1
 #define FALSE 0
 
 typedef struct {
 	char array[3][3];
-    int value;
+    int binaryValue;
+    int shootingStrength;
     int dead;
 } BOT;
 
@@ -39,7 +40,7 @@ void updateHealthGUI(HEALTHBAR* healthbar);
 void killBot(BOTLIST *list, int number);
 STATUSCODE inputWithCharLimit(char* charArray, int lengthOfArray);
 STATUSCODE yesOrNoQuestion(char* question);
-STATUSCODE shoot(BOTLIST *list, int number);
+STATUSCODE shoot(BOTLIST *list, int number, HEALTHBAR *healthbar);
 
 int main(int argc, char* argv[]){
     int randomNumber = 6;
@@ -64,22 +65,17 @@ int main(int argc, char* argv[]){
         botList->BOTArray[i] = makeRandomBot();
     }
 
-    printHealthBar(healthbar);
-    looseHealth(healthbar, 4);
-    looseHealth(healthbar, 2);
-    printHealthBar(healthbar);
-
-    printf("%d\n", botList->BOTArray[3].value);
+    printf("%d\n", botList->BOTArray[3].binaryValue);
 
 
     printf("These are your adversaries, lets funk em up\n");
 
     STATUSCODE result;
     int bots = 6;
-    int bool = FALSE;
+    int boolValue = FALSE;
 
     while(1){
-        if (!bool){
+        if (!boolValue){
             printf("The way you play this game, is you have a given time to shoot each bandit\n");
             printf("This time will vary depending on the room, but expect 1-2 seconds\n");
             printf("To shoot the bandit, you will have to count each \"1\" in their \"body\"\n");
@@ -87,7 +83,7 @@ int main(int argc, char* argv[]){
             printf("When you have decided on the amount, write it in the terminal and press enter\n");
             printf("If you have succeeded, the bandit will lay dead\n");
             printf("If you have failed, the bandit still stands, you loose some health and you have to try again\n");
-            bool = TRUE;
+            boolValue = TRUE;
         }
         result = yesOrNoQuestion("Do you want to enter the room with the bandits?");
         if (result != success){
@@ -100,27 +96,32 @@ int main(int argc, char* argv[]){
         for (int i = 0; i < botList->size; ++i) {
             botList->BOTArray[i] = makeRandomBot();
         }
+        printHealthBar(healthbar);
         printBots(botList);
         for (int i = 0; i < botList->size; ++i) {
-            int result = shoot(botList, i);
-            if(result != success){
-                printf("%d", result);
-                return result;
+            while(1) {
+                int result = shoot(botList, i, healthbar);
+                printHealthBar(healthbar);
+                printBots(botList);
+                if (result == success) {
+                    break;
+                }
             }
-            printBots(botList);
         }
     }
 
 }
 
-STATUSCODE shoot(BOTLIST *list, int number){
+STATUSCODE shoot(BOTLIST *list, int number, HEALTHBAR *healthbar){
     char *array = malloc(sizeof(char) * 2);
     char result = inputWithCharLimit(array, 1);
     int userInput = array[0] - '0';
-    if (userInput == list->BOTArray[number].value){
+    if (userInput == list->BOTArray[number].binaryValue){
         killBot(list, number);
         return success;
     } else{
+        printf("You fucked up buckaroo, you lost %d health\n", list->BOTArray[number].shootingStrength);
+        looseHealth(healthbar, list->BOTArray[number].shootingStrength);
         return wrongValue;
     }
 }
@@ -235,8 +236,13 @@ BOT makeRandomBot(){
 	BOT pBot;
 
 	int count = 0;
-    pBot.value = value;
+    pBot.binaryValue = value;
     pBot.dead = 0;
+    if (pBot.binaryValue <= 5){
+        pBot.shootingStrength = pBot.binaryValue;
+    } else{
+        pBot.shootingStrength = 5;
+    }
 
 	for(int i = 0; i < ALENGTH; i++){
 		for(int j = 0; j < ALENGTH; j++){
