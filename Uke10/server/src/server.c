@@ -46,6 +46,8 @@ int server(){
     readValue = read(sockNewFd, buffer, 256-1);
     if(readValue < 0){
         printf("Reading failed: Error message: %s\n", strerror(errno));
+    } else {
+        printf("%s\n", buffer);
     }
 
     close(sockFd);
