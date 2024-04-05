@@ -11,10 +11,10 @@ RM = rm -f
 OBJDIR = obj
 
 # PATHS
-_DEPS = main.h 
+_DEPS = main.h server.h client.h
 DEPS = $(patsubst %, $(INCLDIR)/%, $(_DEPS))
 
-_OBJS = main.o
+_OBJS = main.o server.o client.o
 OBJS = $(patsubst %, $(OBJDIR)/%, $(_OBJS))
 
 # RULES
@@ -22,7 +22,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
 $(TARGET): $(OBJS)
-	$(CC) -o $(BINDIR)/$@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS)
 	
 .PHONY: clean
 clean:
