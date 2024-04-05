@@ -1,0 +1,62 @@
+Linux sockets/Posix:
+* include <sys/sockets.h>
+-lsocket FLAGS MAKE
+
+* Socket make
+* Bind server side
+* Listen
+* Connect
+
+Creating a server:
+include socket
+
+link in make
+
+socket()
+Bind to address
+
+int sockFd;
+sockFd = socket(AF_INET, SOCK_STREAM, 0);
+
+Check if sockFd is beneath 0
+
+struct sockaddr_in saAddr = {0};
+int iPort = atoi("80");
+saAddr.sin_family = AF_INET;
+saAddr.sin_port = htons(iPort);
+saAddr.sin_addr.s_addr = INADDR_ANY; Bruk 127.0.0.1;
+
+if (Se slide);
+
+sudo rettigheter når man bruker porter under 1024;
+
+listen(socketFd, 5) // 5 = Hvor mange connections samtidig; 5 foreksempel
+Bare flere connection ved multithreading
+
+CREATING A CLIENT
+
+connect() // IPv4
+
+saAddr.sin_Addr.s_adde = htols(0x7F000001); // 127.0.0.1;
+
+call connect
+
+SEND AND RECIEVE DATA
+
+accept // accept client call;
+Call read() or write()
+
+Send in new sockaddr_in;
+Må sjekk om det er IPv4 eller 6.
+
+Begrens deg selv til 1500 bytes. Det er maksimal netverkspakke. - 120 TCP+IP headers
+
+DESIGN A NETWORK PROTOCOL
+
+
+
+
+
+bruk IPv4
+
+

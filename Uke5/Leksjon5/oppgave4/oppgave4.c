@@ -114,6 +114,9 @@ int main(int argc, char* argv[]){
 
 STATUSCODE shoot(BOTLIST *list, int number, HEALTHBAR *healthbar){
     char *array = malloc(sizeof(char) * 2);
+
+    
+
     char result = inputWithCharLimit(array, 1);
     int userInput = array[0] - '0';
     if (userInput == list->BOTArray[number].binaryValue){
@@ -165,11 +168,11 @@ STATUSCODE inputWithCharLimit(char* charArray, int lengthOfArray){
     }
 
     int i = 0;
-    int character;
+    char character;
 
     while(((character = fgetc(stdin)) != '\n')){
         if(i < lengthOfArray){
-            charArray[i++] = (char)character;
+            charArray[i++] = character;
         }
     }
 
