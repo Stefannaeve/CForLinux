@@ -60,6 +60,7 @@ int server(){
     // Set buffer to 0 and use it to read the value from client
     memset(buffer, 0, BUFFERSIZE);
     while(1){
+        printf("first print: %s", stringArray[i])
         int value = send(sockFd, stringArray[i], strlen(stringArray[i]), 0);
         printf("send value: %d", value);
         readValue = read(sockNewFd, buffer, BUFFERSIZE-1);

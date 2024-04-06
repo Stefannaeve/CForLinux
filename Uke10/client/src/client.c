@@ -46,6 +46,7 @@ int client(){
 
     memset(buffer, 0, BUFFERSIZE);
     while(1){
+        printf("first print: %s", msg[i]);
         readValue = read(sockFd, buffer, BUFFERSIZE-1);
         printf("read value = %d", readValue);
         if(readValue < 0){
