@@ -5,6 +5,6 @@
 #ifndef __TASK_SERVER_H__
 #define __TASK_SERVER_H__
 
-int server();
+int server(int argc, char *argv[]);
 
 #endif //__TASK_SERVER_H__
