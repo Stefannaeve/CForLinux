@@ -9,7 +9,7 @@
 int client(){
     struct sockaddr_in saAddr = {0};
     int sockFd;
-    int iPort = atoi("8000");
+    int iPort = 8000;
     char *msg = "This is a message from client";
 
     printf("1\n");

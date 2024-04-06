@@ -12,7 +12,7 @@ int server(){
 
     int sockFd;
     int sockNewFd = 0;
-    int iPort = atoi("8000");
+    int iPort = 8000;
     int readValue;
     int addrLen = sizeof(saAddr);
     char buffer[256];
