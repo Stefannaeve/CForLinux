@@ -67,11 +67,11 @@ int server(){
         } else {
             printf("%s\n", buffer);
         }
-        if(i > 4){
+        i++;
+        if(i > 5){
             break;
         }
         memset(buffer, 0, BUFFERSIZE);
-        i++;
     }
     send(sockNewFd, stringArray[i], strlen(stringArray[i]), 0);
 
