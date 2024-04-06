@@ -59,7 +59,7 @@ int server(){
     printf("5\n");
 
 
-    sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, &addrLen);
+    sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, (socklen_t*) &addrLen);
     if(sockNewFd < 0){
         printf("Accept failed: Error message: %s\n", strerror(errno));
     } else {
