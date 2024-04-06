@@ -28,7 +28,7 @@ int client(){
     saAddr.sin_port = htons(iPort);
     saAddr.sin_addr.s_addr = htonl(0xF000001); //Home
 
-    int irc = connect(sockFd, (struct sockaddr*) &saAddr, sizeof(saAddr);
+    int irc = connect(sockFd, (struct sockaddr*) &saAddr, sizeof(saAddr));
 
     if(irc < 0){
         printf("Connection failed: Error message: %s\n", strerror(errno));
