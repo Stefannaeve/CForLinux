@@ -56,5 +56,5 @@ int server(){
     sockFd = -1;
     sockNewFd = -1;
 
-
+    return 0;
 }
