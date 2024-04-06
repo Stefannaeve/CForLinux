@@ -61,6 +61,7 @@ int client(){
         i++;
     }
     read(sockFd, buffer, BUFFERSIZE-1);
+    printf("%s\n", buffer);
 
     printf("Closing socket\n");
 
