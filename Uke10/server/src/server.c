@@ -52,7 +52,7 @@ int server(){
 
     int irc = listen(sockFd, 5);
 
-    printf("sockFd = %d", sockFd);
+    printf("sockFd = %d\n", sockFd);
 
     printf("irc = %d\n", irc);
 
