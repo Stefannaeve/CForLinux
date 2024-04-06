@@ -61,18 +61,20 @@ int server(){
         int value = send(sockNewFd, stringArray[i], strlen(stringArray[i]), 0);
 
         readValue = read(sockNewFd, buffer, BUFFERSIZE-1);
-        sleep(1.5f);
+        sleep(1);
         if(readValue < 0){
             printf("Reading failed: Error message: %s\n", strerror(errno));
         } else {
             printf("%s\n", buffer);
         }
-        if(i > 5){
+        if(i > 4){
             break;
         }
         memset(buffer, 0, BUFFERSIZE);
         i++;
     }
+    send(sockNewFd, stringArray[i], strlen(stringArray[i]), 0);
+
 
     printf("Closing socket\n");
 

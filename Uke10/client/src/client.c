@@ -47,7 +47,7 @@ int client(){
     memset(buffer, 0, BUFFERSIZE);
     while(1){
         readValue = read(sockFd, buffer, BUFFERSIZE-1);
-        sleep(1.5f);
+        sleep(1);
         if(readValue < 0){
             printf("Reading failed: Error message: %s\n", strerror(errno));
         } else {
@@ -60,6 +60,7 @@ int client(){
         memset(buffer, 0, BUFFERSIZE);
         i++;
     }
+    read(sockFd, buffer, BUFFERSIZE-1);
 
     printf("Closing socket\n");
 
