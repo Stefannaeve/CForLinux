@@ -47,8 +47,6 @@ int server(){
 
     int irc = listen(sockFd, 5);
 
-    printf("irc = %d\n", irc);
-
     sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, (socklen_t*) &addrLen);
     if(sockNewFd < 0){
         printf("Accept failed: Error message: %s\n", strerror(errno));
@@ -60,16 +58,16 @@ int server(){
     // Set buffer to 0 and use it to read the value from client
     memset(buffer, 0, BUFFERSIZE);
     while(1){
-        printf("first print: %s\n", stringArray[i]);
-        int value = send(sockFd, stringArray[i], strlen(stringArray[i]), 0);
-        printf("send value: %d", value);
-        readValue = read(sockFd, buffer, BUFFERSIZE-1);
+        int value = send(sockNewFd, stringArray[i], strlen(stringArray[i]), 0);
+
+        readValue = read(sockNewFd, buffer, BUFFERSIZE-1);
+        sleep(1.5f);
         if(readValue < 0){
             printf("Reading failed: Error message: %s\n", strerror(errno));
         } else {
             printf("%s\n", buffer);
         }
-        if(i > 6){
+        if(i > 5){
             break;
         }
         memset(buffer, 0, BUFFERSIZE);

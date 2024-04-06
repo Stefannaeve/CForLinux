@@ -20,7 +20,7 @@ int client(){
             "MAIL FROM: <stefan.naeve@hotmail.com>",
             "RCPT TO: <amund.myrnokka@gay.no",
             "Hei, du din fjøsnisse",
-            "Test\r\n\r\n.\r\n",
+            "Test",
             "QUIT"
 
     };
@@ -46,16 +46,15 @@ int client(){
 
     memset(buffer, 0, BUFFERSIZE);
     while(1){
-        printf("first print: %s\n", msg[i]);
         readValue = read(sockFd, buffer, BUFFERSIZE-1);
-        printf("read value = %d", readValue);
+        sleep(1.5f);
         if(readValue < 0){
             printf("Reading failed: Error message: %s\n", strerror(errno));
         } else {
             printf("%s\n", buffer);
         }
         send(sockFd, msg[i], strlen(msg[i]), 0);
-        if(i > 5){
+        if(i > 4){
             break;
         }
         memset(buffer, 0, BUFFERSIZE);
