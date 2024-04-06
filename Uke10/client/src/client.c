@@ -10,7 +10,7 @@ int client(){
     struct sockaddr_in saAddr = {0};
     int sockFd;
     int iPort = 8000;
-    char *msg = "This is a message from client";
+    char *msg = "This is a message from client\n";
 
     printf("1\n");
 
@@ -33,7 +33,7 @@ int client(){
     if(irc < 0){
         printf("Connection failed: Error message: %s\n", strerror(errno));
     } else {
-        printf("Connect successfully handled");
+        printf("Connect successfully handled\n");
     }
 
     printf("3\n");

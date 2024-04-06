@@ -63,7 +63,7 @@ int server(){
     if(sockNewFd < 0){
         printf("Accept failed: Error message: %s\n", strerror(errno));
     } else {
-        printf("Accept successfully handled");
+        printf("Accept successfully handled\n");
     }
     printf("6\n");
 
