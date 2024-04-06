@@ -29,4 +29,6 @@ int client(){
 
     close(sockFd);
     sockFd = -1;
+
+    return 0;
 }
