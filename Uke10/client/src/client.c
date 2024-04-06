@@ -26,7 +26,7 @@ int client(){
 
     saAddr.sin_family = AF_INET;
     saAddr.sin_port = htons(iPort);
-    saAddr.sin_addr.s_addr = htonl(0xF000001); //Home
+    saAddr.sin_addr.s_addr = htonl(0xF0000001); //Home
 
     int irc = connect(sockFd, (struct sockaddr*) &saAddr, sizeof(saAddr));
 
