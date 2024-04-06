@@ -17,26 +17,12 @@ int server(){
     int addrLen = sizeof(saAddr);
     char buffer[256];
 
-    /*for (int i = 0; i < 1000; ++i) {
-        printf("%i ", i);
-    }*/
-
-    /*if (iPort <= 0 || iPort >= 65535) {
-        printf("This port doesn't exist.\n");
-        return 1;
-    }*/
-
-    printf("2\n");
-
-
     sockFd = socket(AF_INET, SOCK_STREAM, 0);
     if(sockFd < 0){
         printf("socket failed with %i\n", errno);
     } else {
         printf("Socket sucsessfully created with the id %d\n", sockFd);
     }
-
-    printf("3\n");
 
     saAddr.sin_family = AF_INET;
     saAddr.sin_port = htons(iPort);
@@ -48,16 +34,9 @@ int server(){
         printf("Socket successfully bound to IP address\n");
     }
 
-    printf("4\n");
-
     int irc = listen(sockFd, 5);
 
-    printf("sockFd = %d\n", sockFd);
-
     printf("irc = %d\n", irc);
-
-    printf("5\n");
-
 
     sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, (socklen_t*) &addrLen);
     if(sockNewFd < 0){
@@ -65,7 +44,6 @@ int server(){
     } else {
         printf("Accept successfully handled\n");
     }
-    printf("6\n");
 
     // Set buffer to 0 and use it to read the value from client
     memset(buffer, 0, 256);
@@ -75,8 +53,6 @@ int server(){
     } else {
         printf("%s\n", buffer);
     }
-
-    printf("7\n");
 
     close(sockFd);
     close(sockNewFd);
