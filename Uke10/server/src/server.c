@@ -34,12 +34,18 @@ int server(){
         printf("Failed to bind the socket. Error message: %s\n", strerror(errno));
     }
 
+    printf("1");
+
     listen(sockFd, 5);
+
+    printf("2");
+
 
     sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, (socklen_t*) &addrLen);
     if(sockNewFd < 0){
         printf("Accept failed: Error message: %s\n", strerror(errno));
     }
+    printf("3");
 
     // Set buffer to 0 and use it to read the value from client
     memset(buffer, 0, 256);

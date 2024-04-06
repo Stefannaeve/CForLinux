@@ -25,8 +25,11 @@ int client(){
         printf("Connection failed: Error message: %s\n", strerror(errno));
     }
 
+    printf("1");
+
     send(sockFd, msg, strlen(msg), 0);
 
+    printf("2");
     close(sockFd);
     sockFd = -1;
 
