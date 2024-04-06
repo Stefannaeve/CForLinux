@@ -53,12 +53,14 @@ int client(){
             printf("%s\n", buffer);
         }
         send(sockFd, msg[i], strlen(msg[i]), 0);
-        if(i > 6){
+        if(i > 5){
             break;
         }
         memset(buffer, 0, BUFFERSIZE);
         i++;
     }
+
+    printf("Closing socket\n");
 
     close(sockFd);
     sockFd = -1;

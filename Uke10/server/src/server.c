@@ -74,6 +74,8 @@ int server(){
         i++;
     }
 
+    printf("Closing socket\n");
+
     close(sockFd);
     close(sockNewFd);
     // -1 is often seen as invalid
