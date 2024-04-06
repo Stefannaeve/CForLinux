@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <server.h>
 
+#define BUFFERSIZE 1024
+
 int server(){
     struct sockaddr_in saAddr = {0};
     struct sockaddr_in saConClient = {0};
@@ -15,7 +17,16 @@ int server(){
     int iPort = 8000;
     int readValue;
     int addrLen = sizeof(saAddr);
-    char buffer[256];
+    char buffer[BUFFERSIZE];
+    char *stringArray[] = {
+            "220 127.0.0.1 ESMTP Postfix",
+            "250 Hello Stefan",
+            "250 Sender address Ok",
+            "250 Recipent address Ok",
+            "354 End data with <CR><LF>.<CR><LF>",
+            "250 Message accepted, Ok",
+            "221 127.0.0.1 closing connection"
+    };
 
     sockFd = socket(AF_INET, SOCK_STREAM, 0);
     if(sockFd < 0){
@@ -47,19 +58,19 @@ int server(){
 
     int i = 0;
     // Set buffer to 0 and use it to read the value from client
-    memset(buffer, 0, 256);
+    memset(buffer, 0, BUFFERSIZE);
     while(1){
-        readValue = read(sockNewFd, buffer, 256-1);
+        send(sockFd, stringArray[i], strlen(stringArray[i]), 0);
+        readValue = read(sockNewFd, buffer, BUFFERSIZE-1);
         if(readValue < 0){
             printf("Reading failed: Error message: %s\n", strerror(errno));
         } else {
             printf("%s\n", buffer);
         }
-        send(sockFd, msg, strlen(msg), 0);
         if(i > 6){
             break;
         }
-        memset(buffer, 0, 256);
+        memset(buffer, 0, BUFFERSIZE);
         i++;
     }
 

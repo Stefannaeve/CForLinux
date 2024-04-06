@@ -6,11 +6,24 @@
 #include <unistd.h>
 #include <../include/client.h>
 
+#define BUFFERSIZE 1024
+
 int client(){
     struct sockaddr_in saAddr = {0};
     int sockFd;
     int iPort = 8000;
-    char *msg = "This is a message from client";
+    int readValue;
+    int i = 0;
+    char buffer[BUFFERSIZE];
+    char *msg[] = {
+            "HELO Stefan, 127.0.0.1",
+            "MAIL FROM: <stefan.naeve@hotmail.com>",
+            "RCPT TO: <amund.myrnokka@gay.no",
+            "Hei, du din fjøsnisse",
+            "Test\r\n\r\n.\r\n",
+            "QUIT"
+
+    };
 
     sockFd = socket(AF_INET, SOCK_STREAM, 0);
     if(sockFd < 0){
@@ -31,7 +44,21 @@ int client(){
         printf("Connect successfully handled\n");
     }
 
-    send(sockFd, msg, strlen(msg), 0);
+    memset(buffer, 0, BUFFERSIZE);
+    while(1){
+        readValue = read(sockFd, buffer, BUFFERSIZE-1);
+        if(readValue < 0){
+            printf("Reading failed: Error message: %s\n", strerror(errno));
+        } else {
+            printf("%s\n", buffer);
+        }
+        send(sockFd, msg[i], strlen(msg[i]), 0);
+        if(i > 6){
+            break;
+        }
+        memset(buffer, 0, BUFFERSIZE);
+        i++;
+    }
 
     close(sockFd);
     sockFd = -1;
