@@ -45,13 +45,22 @@ int server(){
         printf("Accept successfully handled\n");
     }
 
+    int i = 0;
     // Set buffer to 0 and use it to read the value from client
     memset(buffer, 0, 256);
-    readValue = read(sockNewFd, buffer, 256-1);
-    if(readValue < 0){
-        printf("Reading failed: Error message: %s\n", strerror(errno));
-    } else {
-        printf("%s\n", buffer);
+    while(1){
+        readValue = read(sockNewFd, buffer, 256-1);
+        if(readValue < 0){
+            printf("Reading failed: Error message: %s\n", strerror(errno));
+        } else {
+            printf("%s\n", buffer);
+        }
+        send(sockFd, msg, strlen(msg), 0);
+        if(i > 6){
+            break;
+        }
+        memset(buffer, 0, 256);
+        i++;
     }
 
     close(sockFd);
