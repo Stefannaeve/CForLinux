@@ -50,7 +50,9 @@ int server(){
 
     printf("4\n");
 
-    listen(sockFd, 5);
+    int irc = listen(sockFd, 5);
+
+    printf("%d\n", irc);
 
     printf("5\n");
 
