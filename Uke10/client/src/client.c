@@ -47,6 +47,7 @@ int client(){
     memset(buffer, 0, BUFFERSIZE);
     while(1){
         readValue = read(sockFd, buffer, BUFFERSIZE-1);
+        printf("read value = %d", readValue);
         if(readValue < 0){
             printf("Reading failed: Error message: %s\n", strerror(errno));
         } else {
