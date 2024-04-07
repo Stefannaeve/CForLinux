@@ -59,7 +59,7 @@ int server(int argc, char *argv[]) {
     textWithNameLength = (strlen(text) + strlen(name) + 1);
 
     textWithName = (char *) malloc(textWithNameLength);
-    memset(name, 0, textWithNameLength);
+    memset(textWithName, 0, textWithNameLength);
 
     if (!textWithName) {
         free(name);
@@ -67,8 +67,8 @@ int server(int argc, char *argv[]) {
         return 1;
     }
 
-    strncpy(textWithName, text, (textWithNameLength));
-    strncat(textWithName, name, (textWithNameLength));
+    snprintf(textWithName, textWithNameLength, "%s%s", text, name);
+
     free(name);
 
     char *stringArray[] = {
@@ -83,10 +83,10 @@ int server(int argc, char *argv[]) {
 
     sockFd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockFd < 0) {
+        free(textWithName);
         printf("Failed to create endpoint and retrieve file descriptor - Error message %s\n", strerror(errno));
         return 1;
     }
-
     printf("Successfully created endpoint with socket\n");
 
     saAddr.sin_family = AF_INET;
@@ -94,26 +94,33 @@ int server(int argc, char *argv[]) {
     saAddr.sin_addr.s_addr = INADDR_ANY;
 
     if (bind(sockFd, (struct sockaddr *) &saAddr, sizeof(saAddr)) < 0) {
+        free(textWithName);
+        close(sockFd);
+        sockFd = -1;
         printf("Failed to bind address and port to socket - Error message: %s\n", strerror(errno));
         return 1;
     }
-
     printf("Socket successfully bound to IP address and port\n");
 
     int irc = listen(sockFd, 5);
 
     if (irc < 0) {
-        printf("Failed to find incoming connection through listen - Error message %i", strerror(errno));
+        free(textWithName);
+        close(sockFd);
+        sockFd = -1;
+        printf("Failed to find incoming connection through listen - Error message %s", strerror(errno));
         return 1;
     }
 
     sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, (socklen_t *) &addrLen);
     if (sockNewFd < 0) {
+        free(textWithName);
+        close(sockFd);
+        sockFd = -1;
         printf("Failed to extract first connection request and create new socket - Error message: %s\n",
                strerror(errno));
         return 1;
     }
-
     printf("Successfully created new socket from connection request\n");
 
     // Set buffer to 0 and use it to read the value from client
@@ -143,7 +150,6 @@ int server(int argc, char *argv[]) {
     printf("Closing socket\n");
 
     free(textWithName);
-    free(name);
 
     close(sockFd);
     close(sockNewFd);

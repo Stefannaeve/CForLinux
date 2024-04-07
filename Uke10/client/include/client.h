@@ -5,6 +5,6 @@
 #ifndef __TASK_CLIENT_H__
 #define __TASK_CLIENT_H__
 
-int client();
+int client(int argc, char *argv[]);
 
 #endif //__TASK_CLIENT_H__
