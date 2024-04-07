@@ -129,7 +129,7 @@ int server(int argc, char *argv[]) {
         value = send(sockNewFd, stringArray[i], strlen(stringArray[i]), 0);
 
         if (value < 0) {
-            printf("Failed to transmit message - Error massage: %s", strerror(errno));
+            printf("Failed to transmit message - Error massage: %s\n", strerror(errno));
         }
 
         readValue = read(sockNewFd, buffer, BUFFERSIZE - 1);

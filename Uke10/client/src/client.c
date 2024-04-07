@@ -93,6 +93,7 @@ int client(int argc, char *argv[]) {
         close(sockFd);
         sockFd = -1;
         printf("Connection failed: Error message: %s\n", strerror(errno));
+        return 1;
     }
     printf("Connect successfully handled\n");
 
@@ -109,7 +110,7 @@ int client(int argc, char *argv[]) {
         value = send(sockFd, msg[i], strlen(msg[i]), 0);
 
         if (value < 0) {
-            printf("Failed to transmit message - Error massage: %s", strerror(errno));
+            printf("Failed to transmit message - Error massage: %s\n", strerror(errno));
         }
 
         if (i > 4) {
