@@ -1,0 +1,8 @@
+* Retrieve data from web server
+* Only use sockets, no thirs party libraries or operating system calls
+* Download the following url http://www.eastwillsecurity.com/pg3401/test.html
+* Start method without parameter
+* Hardcode TCP protocol (TCP input in socket), port 80, and url for web server (SOCK_STREAM, 0    THIS MEANS HARDCODED TCP)
+* Should connect to the specific port
+* Send an HTTP GET packet to the url
+* Client should read response from web server, and print to terminal
