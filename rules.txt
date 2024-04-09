@@ -15,15 +15,21 @@ pKakemann == Memory address
 *pKakemann == 20
 
 Hungerian notation
-	l = long                     // lLongNumber
-	d = double                   // dNumber
-	c = char                     // cVowels
-	i = int                      // iIntegerNumber
-	s = string                   // sInput
-	sz = Zero terminated string  // szInput
-	f = float                    // fNumber
-	a+type = array + type        // acArray (char array)
-	p+type = pointer + type      // piAge (int*)
+
+	Function = Starts with small letters
+	c file = starts with small letters
+	h file = Same as c file
+	
+	l = long                                // lLongNumber
+	d = double                              // dNumber
+	c = char                                // cVowels
+	i = int                                 // iIntegerNumber
+	s = string                              // sInput
+	sz = Zero terminated string             // szInput
+	f = float                               // fNumber
+	s + (First letter of struct = struct)   // spStefan (struct Person)
+	a+type = array + type                   // acArray (char array)
+	p+type = pointer + type                 // piAge (int*)
 	
 
 Making a static library
