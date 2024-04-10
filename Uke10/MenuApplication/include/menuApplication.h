@@ -5,6 +5,6 @@
 #ifndef TASK_MENUAPPLICATION_H
 #define TASK_MENUAPPLICATION_H
 
-int application();
+int menuApplication();
 
 #endif //TASK_MENUAPPLICATION_H
