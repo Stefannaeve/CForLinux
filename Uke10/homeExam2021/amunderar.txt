@@ -1,10 +1,7 @@
-<TITLE>IKKE.NO(E!)</TITLE>
-<BODY BGCOLOR="#ffffff">
-<H1> www.ikke.no </H1>
-
-Hva ventet du egentlig å finne?
-<BR CLEAR=ALL>
-<HR>
-<P ALIGN="CENTER">
-<A HREF="mailto:webmaster@ikke.no">webmaster@ikke.no</A>
-</BODY>
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body bgcolor="white">
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>nginx/1.10.3</center>
+</body>
+</html>
