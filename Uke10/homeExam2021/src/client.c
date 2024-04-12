@@ -21,6 +21,7 @@ int client() {
     int readValue;
     int i = 0;
     int value;
+    int position;
     char buffer[BUFFERSIZE];
     char readFromFile[BUFFERSIZE];
     const char lineBeforeBody[] = "\r\n\r\n";
@@ -72,50 +73,43 @@ int client() {
 
                     if (readValue < 0) {
                         printf("Reading failed: Error message: %s\n", strerror(errno));
-                    }
+                    } else {
 
-                    printf("Closing socket\n");
+                        printf("Closing socket\n");
 
-                    token = strstr(buffer, lineBeforeBody);
+                        token = strstr(buffer, lineBeforeBody);
 
-                    if (token != NULL) {
-                        token += strlen(lineBeforeBody);
-                    }
+                        if (token == NULL) {
+                            printf("Failed to retrieve token - Error message %s\n", strerror(errno));
+                        } else {
+                            token += strlen(lineBeforeBody);
 
-                    FILE *newFile = fopen(filename, "w+");
+                            FILE *newFile = fopen(filename, "w+");
 
-                    if (newFile == NULL) {
-                        printf("Failed to open file - Error message: %s\n", strerror(errno));
-                        return 1;
-                    }
+                            if (newFile == NULL) {
+                                printf("Failed to open file - Error message: %s\n", strerror(errno));
+                            } else {
 
-                    fputs(token, newFile);
+                                fputs(token, newFile);
 
-                    fclose(newFile);
+                                fseek(newFile, 0, SEEK_END);
+                                position = ftell(newFile);
 
-                    newFile = fopen(filename, "r");
+                                printf("Position: %d\n", position);
 
-                    fseek(newFile, 0, SEEK_END);
-                    int position = ftell(newFile);
+                                rewind(newFile);
 
-                    printf("Position: %d\n", position);
+                                fread(readFromFile, 2048, sizeof(char), newFile);
 
-                    fseek(newFile, 0, SEEK_SET);
+                                printf("%s\n", readFromFile);
 
-                    for (int j = 0; j < position; ++j) {
-                        char temp = getc(newFile);
-                        if (temp == EOF) {
-                            break;
+                                fclose(newFile);
+
+                                close(sockFd);
+                                sockFd = -1;
+                            }
                         }
-                        readFromFile[j] = temp;
                     }
-
-                    printf("%s\n", readFromFile);
-
-                    fclose(newFile);
-
-                    close(sockFd);
-                    sockFd = -1;
                 }
             }
         }
