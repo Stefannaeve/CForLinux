@@ -6,16 +6,24 @@
 
 void printListOptions(char *array[], int sizeOfArray);
 int inputWithCharLimit(char* charArray, int lengthOfArray);
+void menuHandling(char *array[]);
 
 int menuApplication(){
-    printf("Type the command you want [1-5]:\n");
     char *array[] = {
             "Add an item in the database",
             "Find an item in the database",
             "Find the number of items in the database",
             "Delete an item from the database"
     };
+
+    menuHandling(array);
+    return 0;
+}
+
+void menuHandling(char *array[]){
     int sizeOfArray = sizeof(array)/sizeof(char *);
+
+    printf("Type the command you want [1-%d]:\n", sizeOfArray);
 
     printListOptions(array, sizeOfArray);
 
@@ -26,8 +34,6 @@ int menuApplication(){
         printf("Issue with getting stream from user - Error message: %s", strerror(errno));
         exit(result);
     }
-
-    return 0;
 }
 
 void printListOptions(char *array[], int sizeOfArray){
