@@ -19,20 +19,20 @@ Exercise 3:
 
 Assume the linked list struct
 
-typedef struct _LIST {
-   struct _LIST *pNext;
+typedef struct _NODE {
+   struct _NODE *pNext;
    int iSze
-   char cBuf[1];
+   char szBuffer[1];
 } LIST;
 
-The buffer cBuf is a placeholder for any kind and size of data, and can be used
+The buffer szBuffer is a placeholder for any kind and size of data, and can be used
 to hold a string as:
 
    char szStr[] = "This is a long string.";
    LIST *pThis = malloc (sizeof(LIST)+strlen(szStr));
-   strcpy (pThis->cBuf, szStr);
+   strcpy (pThis->szBuffer, szStr);
 
-How would you write code that uses cBuf[] to "hold" an array of 100 longs?
+How would you write code that uses szBuffer[] to "hold" an array of 100 longs?
 
 Make a set of functions to manipulate linked lists of this kind and implement the
 following:
