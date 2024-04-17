@@ -24,7 +24,7 @@ int addAt(LIST *list, const char *szValue, int indexOffset, int position);
 
 void addToEnd(LIST *list, NODE *temp);
 
-void addToIndex(LIST *list, NODE *temp, int index);
+void addAtIndex(LIST *list, NODE *temp, int index);
 
 void freeLinkedList(LIST *list);
 
@@ -129,7 +129,7 @@ int addAt(LIST *list, const char *szValue, int indexOffset, int position) {
 
     switch (position) {
         case 0:
-            addToIndex(list, temp, indexOffset);
+            addAtIndex(list, temp, indexOffset);
             break;
         case 1:
             addToEnd(list, temp);
@@ -150,7 +150,7 @@ void addToEnd(LIST *list, NODE *temp) {
     list->size++;
 }
 
-void addToIndex(LIST *list, NODE *temp, int index) {
+void addAtIndex(LIST *list, NODE *temp, int index) {
 
     NODE *current;
     int counter = 0;
@@ -252,6 +252,7 @@ int deleteSpecificNode(LIST *list, int index) {
         printf("Error: Index out of range!\n");
         return 1;
     }
+
     if (current->pPrev == NULL) {
         list->pHead = current->pNext;
     } else {
