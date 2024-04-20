@@ -6,11 +6,21 @@
 #include "menuApplication.h"
 #include "linkedList.h"
 
+#define TRUE 1
+#define FALSE 0
+#define ARRAYSIZE 100
+
 typedef struct _MOVIE {
     char *title;
     char *director;
     int rating;
 } MOVIE;
+
+enum returnCodes{
+    SUCCESS,
+    ERROR,
+    QUIT
+};
 
 void printListOptions(char *array[], int sizeOfArray);
 
@@ -20,7 +30,9 @@ int menuHandling(char *array[], char *inputArray, int sizeOfArray);
 
 int addMovie(LIST *list);
 
-int inputFromUser(char *title, int expectedSize);
+int askUserQuestion(char *title, char *inputArray, int expectedSize);
+
+int yesOrNo();
 
 int menuApplication() {
     char *array[] = {
@@ -32,14 +44,14 @@ int menuApplication() {
     };
 
     int sizeOfArray = sizeof(array) / sizeof(char *);
-    char *inputArray = (char *) malloc(sizeof(char));
+    char *inputArray = (char *) malloc(sizeof(char) * 2);
     LIST list = {NULL, NULL, 0};
 
     while (1) {
 
         char result = menuHandling(array, inputArray, sizeOfArray);
 
-        if (result != 0) {
+        if (result != SUCCESS) {
 
         } else {
             switch (*inputArray) {
@@ -72,7 +84,8 @@ int menuApplication() {
 
 int addMovie(LIST *list) {
     char title[] = "What is the name of the movie?";
-    inputFromUser(&title, 60);
+    char inputArray[ARRAYSIZE];
+    askUserQuestion(title, inputArray, ARRAYSIZE);
 }
 
 int menuHandling(char *array[], char *inputArray, int sizeOfArray) {
@@ -82,12 +95,12 @@ int menuHandling(char *array[], char *inputArray, int sizeOfArray) {
     printListOptions(array, sizeOfArray);
 
     int result = inputWithCharLimit(inputArray, 1);
-    if (result != 0) {
+    if (result != SUCCESS) {
         printf("Issue with getting stream from user - Error message: %s", strerror(errno));
-        return -1;
+        return ERROR;
     }
 
-    return 0;
+    return SUCCESS;
 }
 
 void printListOptions(char *array[], int sizeOfArray) {
@@ -96,21 +109,52 @@ void printListOptions(char *array[], int sizeOfArray) {
     }
 }
 
-int inputFromUser(char *title, int expectedSize) {
-    char *inputArray = (char *) malloc(sizeof(char) * expectedSize);
-    while(1){
+int askUserQuestion(char *title, char *inputArray, int expectedSize) {
+    while (1) {
         printf("%s\n", title);
         int result = inputWithCharLimit(inputArray, expectedSize);
-        if (result != 0){
-            printf("Fuck up");
+        if (result != SUCCESS) {
+            printf("Error message: %s\nTry again", strerror(errno));
         } else {
-            printf("You wrote: %s\nIs that right? y/n", inputArray);
+            printf("You wrote: %s\nIs that right? y/n or q for quit\n", inputArray);
+            int status = yesOrNo();
+            if (status != TRUE){
+                if (status == QUIT){
+                    printf("Are you sure you want to quit?\n");
+                    status = yesOrNo();
+                    if (status == TRUE){
+                        return QUIT;
+                    }
+                    if (status == FALSE){
+                        printf("Returning to question\n");
+                    } else {
+                        return QUIT;
+                    }
+                }
+                printf("Try again\n");
+            } else {
+                return SUCCESS;
+            }
         }
     }
 }
 
-int yesOrNo(){
-    //inputWithCharLimit()
+int yesOrNo() {
+    char character[2];
+    while (1) {
+        inputWithCharLimit(&character, 2);
+        switch (character[0]) {
+            case 'y':
+                return TRUE;
+            case 'n':
+                return FALSE;
+            case 'q':
+                return QUIT;
+            default:
+                printf("Wrong input, it has to be \"y\" or \"n\"");
+                break;
+        }
+    }
 }
 
 int inputWithCharLimit(char *charArray, int lengthOfArray) {
