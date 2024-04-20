@@ -6,8 +6,10 @@
 #include "menuApplication.h"
 #include "linkedList.h"
 
-#define TRUE 1
+#define ERROR -1
 #define FALSE 0
+#define TRUE 1
+#define QUIT 2
 #define ARRAYSIZE 100
 
 typedef struct _MOVIE {
@@ -15,12 +17,6 @@ typedef struct _MOVIE {
     char *director;
     int rating;
 } MOVIE;
-
-enum returnCodes{
-    SUCCESS,
-    ERROR,
-    QUIT
-};
 
 void printListOptions(char *array[], int sizeOfArray);
 
@@ -47,11 +43,11 @@ int menuApplication() {
     char *inputArray = (char *) malloc(sizeof(char) * 2);
     LIST list = {NULL, NULL, 0};
 
-    while (1) {
+    while(TRUE) {
 
         char result = menuHandling(array, inputArray, sizeOfArray);
 
-        if (result != SUCCESS) {
+        if (result != TRUE) {
 
         } else {
             switch (*inputArray) {
@@ -95,12 +91,12 @@ int menuHandling(char *array[], char *inputArray, int sizeOfArray) {
     printListOptions(array, sizeOfArray);
 
     int result = inputWithCharLimit(inputArray, 1);
-    if (result != SUCCESS) {
+    if (result != TRUE) {
         printf("Issue with getting stream from user - Error message: %s", strerror(errno));
         return ERROR;
     }
 
-    return SUCCESS;
+    return TRUE;
 }
 
 void printListOptions(char *array[], int sizeOfArray) {
@@ -113,27 +109,19 @@ int askUserQuestion(char *title, char *inputArray, int expectedSize) {
     while (1) {
         printf("%s\n", title);
         int result = inputWithCharLimit(inputArray, expectedSize);
-        if (result != SUCCESS) {
+        if (result != TRUE) {
             printf("Error message: %s\nTry again", strerror(errno));
+            return ERROR;
         } else {
             printf("You wrote: %s\nIs that right? y/n or q for quit\n", inputArray);
             int status = yesOrNo();
             if (status != TRUE){
                 if (status == QUIT){
-                    printf("Are you sure you want to quit?\n");
-                    status = yesOrNo();
-                    if (status == TRUE){
-                        return QUIT;
-                    }
-                    if (status == FALSE){
-                        printf("Returning to question\n");
-                    } else {
-                        return QUIT;
-                    }
+                    return QUIT;
                 }
                 printf("Try again\n");
             } else {
-                return SUCCESS;
+                return TRUE;
             }
         }
     }
@@ -149,7 +137,13 @@ int yesOrNo() {
             case 'n':
                 return FALSE;
             case 'q':
-                return QUIT;
+                printf("Are you sure you want to quit? y/n\n");
+                inputWithCharLimit(&character, 2);
+                if(character[0] == 'y'){
+                    return QUIT;
+                } else {
+                    return FALSE;
+                }
             default:
                 printf("Wrong input, it has to be \"y\" or \"n\"");
                 break;
@@ -181,5 +175,5 @@ int inputWithCharLimit(char *charArray, int lengthOfArray) {
 
     charArray[i] = '\0';
 
-    return 0;
+    return TRUE;
 }
