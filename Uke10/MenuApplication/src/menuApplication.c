@@ -3,10 +3,11 @@
 #include <malloc.h>
 #include <string.h>
 #include "menuApplication.h"
+#include "linkedList.h"
 
 void printListOptions(char *array[], int sizeOfArray);
 int inputWithCharLimit(char* charArray, int lengthOfArray);
-void menuHandling(char *array[]);
+void menuHandling(char *array[], int sizeOfArray);
 
 int menuApplication(){
     char *array[] = {
@@ -16,12 +17,13 @@ int menuApplication(){
             "Delete an item from the database"
     };
 
-    menuHandling(array);
+    int sizeOfArray = sizeof(array)/sizeof(char *);
+    menuHandling(array, sizeOfArray);
+
     return 0;
 }
 
-void menuHandling(char *array[]){
-    int sizeOfArray = sizeof(array)/sizeof(char *);
+void menuHandling(char *array[], int sizeOfArray){
 
     printf("Type the command you want [1-%d]:\n", sizeOfArray);
 

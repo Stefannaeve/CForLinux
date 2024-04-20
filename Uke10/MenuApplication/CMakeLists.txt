@@ -7,6 +7,8 @@ include_directories(include)
 
 add_executable(task
         src/main.c
+        src/menuApplication.c
+        src/linkedList.c
         include/main.h
         include/menuApplication.h
-        src/menuApplication.c)
+        include/linkedList.h)

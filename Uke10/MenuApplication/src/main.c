@@ -1,4 +1,6 @@
 #include "menuApplication.h"
+#include "linkedList.h"
+#include "string.h"
 
 int main(){
     int status = menuApplication();
@@ -6,4 +8,6 @@ int main(){
         return 1;
     }
     return 0;
+
+
 }
