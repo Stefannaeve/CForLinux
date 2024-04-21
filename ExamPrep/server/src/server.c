@@ -8,19 +8,37 @@
 
 #define BUFFERSIZE 1024
 
-int server(int argc, char *argv[]) {
+typedef struct _SNP_HEADER {
+    int32_t contentType;
+    int32_t sizeOfBody;
+} SNP_HEADER;
 
-    if (argc < 5) {
-        printf("Wrong number of arguments, there should be 5\n");
-        return 1;
-    }
+typedef struct _SNP {
+    SNP_HEADER snpHeader;
+    char body[];
+} SNP;
+
+enum CONTENTTYPE{
+    STRING,
+    CHAR,
+    INT,
+    DOUBLE,
+};
+
+int server(int argc, char *argv[]) {
 
     struct sockaddr_in saAddr = {0};
     struct sockaddr_in saConClient = {0};
+    SNP_HEADER clientHeader = {0};
+
+    int contentType;
+    int sizeOfBody;
+
+
 
     int sockFd;
     int sockNewFd = 0;
-    int iPort;
+    int iPort = 8080;
     int readValue;
     int addrLen = sizeof(saAddr);
     int i = 0;
@@ -31,131 +49,50 @@ int server(int argc, char *argv[]) {
     char *textWithName;
     char *text = "250 Hello ";
 
-    if (strcmp(argv[1], "-port") != 0) {
-        printf("first argument should be \"-port\"\n");
-        return 1;
-    }
-
-    iPort = atoi(argv[2]);
-
-    if (strcmp(argv[3], "-name") != 0) {
-        printf("second argument should be \"-name\"\n");
-        return 1;
-    }
-
-    if (strlen(argv[4]) > 1024) {
-        printf("-name variable size is to long, max char size is 1024");
-        return 1;
-    }
-
-    name = (char *) malloc(strlen(argv[4]) + 1);
-    memset(name, 0, (strlen(argv[4]) + 1));
-    if (!name) {
-        printf("Error allocating memory\n");
-        return 1;
-    }
-    strncpy(name, argv[4], (strlen(argv[4]) + 1));
-
-    textWithNameLength = (strlen(text) + strlen(name) + 1);
-
-    textWithName = (char *) malloc(textWithNameLength);
-    memset(textWithName, 0, textWithNameLength);
-
-    if (!textWithName) {
-        free(name);
-        printf("Error allocating memory\n");
-        return 1;
-    }
-
-    snprintf(textWithName, textWithNameLength, "%s%s", text, name);
-
-    free(name);
-
-    char *stringArray[] = {
-            "220 127.0.0.1 ESMTP Postfix",
-            textWithName,
-            "250 Sender address Ok",
-            "250 Recipent address Ok",
-            "354 End data with <CR><LF>.<CR><LF>",
-            "250 Message accepted, Ok",
-            "221 127.0.0.1 closing connection"
-    };
-
-    sockFd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockFd < 0) {
-        free(textWithName);
-        printf("Failed to create endpoint and retrieve file descriptor - Error message %s\n", strerror(errno));
-        return 1;
-    }
-    printf("Successfully created endpoint with socket\n");
-
     saAddr.sin_family = AF_INET;
     saAddr.sin_port = htons(iPort);
     saAddr.sin_addr.s_addr = INADDR_ANY;
 
-    if (bind(sockFd, (struct sockaddr *) &saAddr, sizeof(saAddr)) < 0) {
-        free(textWithName);
-        close(sockFd);
-        sockFd = -1;
-        printf("Failed to bind address and port to socket - Error message: %s\n", strerror(errno));
-        return 1;
-    }
-    printf("Socket successfully bound to IP address and port\n");
+    sockFd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockFd < 0) {
+        printf("Failed to create endpoint and retrieve file descriptor - Error message %s\n", strerror(errno));
+    } else {
+        printf("Successfully created endpoint with socket\n");
 
-    int irc = listen(sockFd, 5);
-
-    if (irc < 0) {
-        free(textWithName);
-        close(sockFd);
-        sockFd = -1;
-        printf("Failed to find incoming connection through listen - Error message %s", strerror(errno));
-        return 1;
-    }
-
-    sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, (socklen_t *) &addrLen);
-    if (sockNewFd < 0) {
-        free(textWithName);
-        close(sockFd);
-        sockFd = -1;
-        printf("Failed to extract first connection request and create new socket - Error message: %s\n",
-               strerror(errno));
-        return 1;
-    }
-    printf("Successfully created new socket from connection request\n");
-
-    // Set buffer to 0 and use it to read the value from client
-    memset(buffer, 0, BUFFERSIZE);
-    while (1) {
-        value = send(sockNewFd, stringArray[i], strlen(stringArray[i]), 0);
-
-        if (value < 0) {
-            printf("Failed to transmit message - Error massage: %s\n", strerror(errno));
-        }
-
-        readValue = read(sockNewFd, buffer, BUFFERSIZE - 1);
-        sleep(1);
-        if (readValue < 0) {
-            printf("Reading failed - Error message: %s\n", strerror(errno));
+        if (bind(sockFd, (struct sockaddr *) &saAddr, sizeof(saAddr)) < 0) {
+            printf("Failed to bind address and port to socket - Error message: %s\n", strerror(errno));
         } else {
-            printf("%s\n", buffer);
+            printf("Socket successfully bound to IP address and port\n");
+
+            int irc = listen(sockFd, 5);
+
+            if (irc < 0) {
+                printf("Failed to find incoming connection through listen - Error message %s", strerror(errno));
+            } else {
+
+                sockNewFd = accept(sockFd, (struct sockaddr *) &saConClient, (socklen_t *) &addrLen);
+                if (sockNewFd < 0) {
+                    printf("Failed to extract first connection request and create new socket - Error message: %s\n",
+                           strerror(errno));
+                } else {
+
+                    read(sockNewFd, &clientHeader, sizeof(clientHeader));
+
+                    printf("ContentType: %d, size of Body: %d\n", clientHeader.contentType, clientHeader.sizeOfBody);
+
+                    printf("Successfully created new socket from connection request\n");
+
+                    printf("Closing socket\n");
+
+                    close(sockFd);
+                    close(sockNewFd);
+                    sockFd = -1;
+                    sockNewFd = -1;
+
+                    return 0;
+                }
+            }
         }
-        i++;
-        if (i > 5) {
-            break;
-        }
-        memset(buffer, 0, BUFFERSIZE);
     }
-    send(sockNewFd, stringArray[i], strlen(stringArray[i]), 0);
-
-    printf("Closing socket\n");
-
-    free(textWithName);
-
-    close(sockFd);
-    close(sockNewFd);
-    // -1 is often seen as invalid
-    sockFd = -1;
-    sockNewFd = -1;
-
-    return 0;
+    return -1;
 }

@@ -10,14 +10,24 @@
 
 int userInput(char *buffer, int size);
 
+int chooseContentType(char *buffer, int size);
+
 typedef struct _SNP_HEADER {
-    int32_t sizeOfBody: 4;
+    int32_t contentType;
+    int32_t sizeOfBody;
 } SNP_HEADER;
 
 typedef struct _SNP {
     SNP_HEADER snpHeader;
     char body[];
 } SNP;
+
+enum CONTENTTYPE{
+    STRING,
+    CHAR,
+    INT,
+    DOUBLE,
+};
 
 int client(int argc, char *argv[]) {
     int sockFd;
@@ -43,7 +53,14 @@ int client(int argc, char *argv[]) {
         } else {
             printf("Connect successfully handled\n");
 
-            userInput(&buffer, BUFFERSIZE);
+            printf("Write the type of your message\n1. String\n2. Char\n3. Int\n4. Long\n");
+
+            int contentType = chooseContentType(buffer, BUFFERSIZE);
+            memset(buffer, 0, BUFFERSIZE);
+
+            printf("Write your message\n");
+
+            userInput(buffer, BUFFERSIZE);
 
             sizeOfBuffer = strlen(buffer);
 
@@ -53,6 +70,8 @@ int client(int argc, char *argv[]) {
 
             snp->snpHeader.sizeOfBody = sizeOfBuffer;
             strncpy(snp->body, buffer, sizeOfBuffer);
+
+            snp->snpHeader.contentType = contentType;
 
             snp->body[sizeOfBuffer - 1] = '\0';
 
@@ -69,6 +88,26 @@ int client(int argc, char *argv[]) {
     }
 
     return 1;
+}
+
+int chooseContentType(char *buffer, int size){
+    while(1){
+        userInput(buffer, size);
+        if(buffer[0] == '1'){
+            return STRING;
+        }
+        if(buffer[0] == '2'){
+            return CHAR;
+        }
+        if(buffer[0] == '3'){
+            return INT;
+        }
+        if(buffer[0] == '4'){
+            return DOUBLE;
+        }
+        printf("Wrong contentType, choose 1, 2, 3 or 4");
+        memset(buffer, 0, size);
+    }
 }
 
 int userInput(char *buffer, int size) {
