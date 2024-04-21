@@ -31,23 +31,11 @@ int server(int argc, char *argv[]) {
     struct sockaddr_in saConClient = {0};
     SNP_HEADER clientHeader = {0};
 
-    int contentType;
-    int sizeOfBody;
-
-
-
     int sockFd;
     int sockNewFd = 0;
     int iPort = 8080;
-    int readValue;
     int addrLen = sizeof(saAddr);
-    int i = 0;
-    int value;
-    int textWithNameLength;
     char buffer[BUFFERSIZE];
-    char *name;
-    char *textWithName;
-    char *text = "250 Hello ";
 
     saAddr.sin_family = AF_INET;
     saAddr.sin_port = htons(iPort);
