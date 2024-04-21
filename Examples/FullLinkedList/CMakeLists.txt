@@ -6,4 +6,6 @@ set(CMAKE_C_STANDARD 11)
 include_directories(include)
 
 add_executable(task
-        src/threads.c)
+        src/main.c
+        src/list.c
+        src/testlist.c)
